@@ -19,12 +19,11 @@ data = pd.read_csv(r'C:\Users\gregs\Desktop\Canada\Cours\MGL869\Projet_FInal\Mer
 # Pré-traitement
 data = data.replace({',': '.'}, regex=True)
 
-# Assurez-vous que toutes les colonnes numériques sont de type float
 for column in data.select_dtypes(include='object').columns:
     try:
         data[column] = data[column].astype(float)
     except ValueError:
-        pass  # Ignore les colonnes non convertibles (comme celles avec des chaînes non numériques)
+        pass  # Ignore les colonnes non convertibles (celles avec des chaînes non numériques)
 
 # Vérifier les types après conversion
 print(data.dtypes)
@@ -52,23 +51,21 @@ X_scaled = scaler.fit_transform(X)
 # Vérifier les NaN dans X
 print("Nombre de valeurs NaN dans X :", np.isnan(X_scaled).sum())
 
-# Gérer les NaN dans X en les remplaçant par la moyenne de chaque colonne
 if np.isnan(X_scaled).sum() > 0:
     from sklearn.impute import SimpleImputer
-    imputer = SimpleImputer(strategy='mean')  # Vous pouvez choisir 'median' ou autre stratégie
+    imputer = SimpleImputer(strategy='mean')  
     X_scaled = imputer.fit_transform(X_scaled)
     print("Les valeurs NaN dans X ont été remplacées par la moyenne.")
 
-# Vérifier les NaN dans y
+
 print("Nombre de valeurs NaN dans y :", y.isnull().sum())
 
-# Gérer les NaN dans y
+
 if y.isnull().sum() > 0:
-    y = y.fillna(0)  # Exemple : remplacer les NaN dans y par 0
+    y = y.fillna(0)  
     print("Les valeurs NaN dans y ont été remplacées par 0.")
 
 
-# Vérifier les valeurs infinies dans X
 print("Nombre de valeurs infinies dans X :", np.isinf(X_scaled).sum())
 
 # Gérer les valeurs infinies en les remplaçant par la moyenne de chaque colonne
